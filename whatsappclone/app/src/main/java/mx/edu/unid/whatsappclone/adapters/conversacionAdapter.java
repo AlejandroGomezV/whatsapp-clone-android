@@ -3,6 +3,7 @@ package mx.edu.unid.whatsappclone.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -38,7 +39,9 @@ public class conversacionAdapter extends FirestoreRecyclerAdapter<ConversacionMo
         }
         viewHolder.textViewFecha.setText("02:04 p.m.");
         viewHolder.textViewMensaje.setText(conversacion.getMessage());
-        viewHolder.textViewNotificacion.setText("3");
+        int numnotificaciones = (int) (Math.random()*10)+1;
+        viewHolder.textViewNotificacion.setText(String.valueOf(numnotificaciones));
+        viewHolder.imageViewContacto.setImageResource(R.drawable.usuario);
     }
 
     @NonNull
@@ -53,6 +56,7 @@ public class conversacionAdapter extends FirestoreRecyclerAdapter<ConversacionMo
         TextView textViewFecha;
         TextView textViewMensaje;
         TextView textViewNotificacion;
+        ImageView imageViewContacto;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -61,6 +65,7 @@ public class conversacionAdapter extends FirestoreRecyclerAdapter<ConversacionMo
             textViewFecha = itemView.findViewById(R.id.horaConversacion);
             textViewMensaje = itemView.findViewById(R.id.mensajeConversacion);
             textViewNotificacion = itemView.findViewById(R.id.notificacionConversacion);
+            imageViewContacto = itemView.findViewById(R.id.imageConversacion);
         }
     }
 }
