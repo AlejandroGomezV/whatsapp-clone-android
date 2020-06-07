@@ -1,14 +1,23 @@
 package mx.edu.unid.whatsappclone.controlador;
 
+import android.app.DownloadManager;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+
 import mx.edu.unid.whatsappclone.R;
+import mx.edu.unid.whatsappclone.adapters.conversacionAdapter;
+import mx.edu.unid.whatsappclone.models.ConversacionModelo;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,6 +34,10 @@ public class Chats extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    RecyclerView recyclerViewConversaciones;
+    conversacionAdapter mAdapter;
+    FirebaseFirestore mFirestore;
 
     public Chats() {
         // Required empty public constructor
@@ -60,7 +73,34 @@ public class Chats extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_chats, container, false);
+
+        View vista = inflater.inflate(R.layout.fragment_chats, container, false);
+
+        recyclerViewConversaciones = vista.findViewById(R.id.recyclerConversacion);
+        recyclerViewConversaciones.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        mFirestore = FirebaseFirestore.getInstance();
+        Query query = mFirestore.collection("chat");
+
+        FirestoreRecyclerOptions<ConversacionModelo> firestoreRecyclerOptions = new FirestoreRecyclerOptions.Builder<ConversacionModelo>()
+                .setQuery(query, ConversacionModelo.class).build();
+
+        mAdapter = new conversacionAdapter(firestoreRecyclerOptions);
+        mAdapter.notifyDataSetChanged();
+        recyclerViewConversaciones.setAdapter(mAdapter);
+
+        return vista;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mAdapter.startListening();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mAdapter.stopListening();
     }
 }
