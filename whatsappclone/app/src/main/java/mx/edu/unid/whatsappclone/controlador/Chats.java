@@ -94,7 +94,7 @@ public class Chats extends Fragment {
         mAdapter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Clic "+ mAdapter.getItem(0).getMessage(),Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), "Clic "+ mAdapter.getItem(0).getMessage(),Toast.LENGTH_SHORT).show();
                 /*Codigo evento clic*/
                 abrirPantallaConversacion(v);
             }
