@@ -1,6 +1,7 @@
 package mx.edu.unid.whatsappclone.controlador;
 
 import android.app.DownloadManager;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -17,6 +19,7 @@ import com.google.firebase.firestore.Query;
 
 import mx.edu.unid.whatsappclone.R;
 import mx.edu.unid.whatsappclone.adapters.conversacionAdapter;
+import mx.edu.unid.whatsappclone.detalle_conversacion;
 import mx.edu.unid.whatsappclone.models.ConversacionModelo;
 
 /**
@@ -82,14 +85,29 @@ public class Chats extends Fragment {
         mFirestore = FirebaseFirestore.getInstance();
         Query query = mFirestore.collection("chat");
 
-        FirestoreRecyclerOptions<ConversacionModelo> firestoreRecyclerOptions = new FirestoreRecyclerOptions.Builder<ConversacionModelo>()
+        final FirestoreRecyclerOptions<ConversacionModelo> firestoreRecyclerOptions = new FirestoreRecyclerOptions.Builder<ConversacionModelo>()
                 .setQuery(query, ConversacionModelo.class).build();
 
         mAdapter = new conversacionAdapter(firestoreRecyclerOptions);
         mAdapter.notifyDataSetChanged();
+
+        mAdapter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "Clic "+ mAdapter.getItem(0).getMessage(),Toast.LENGTH_SHORT).show();
+                /*Codigo evento clic*/
+                abrirPantallaConversacion(v);
+            }
+        });
+
         recyclerViewConversaciones.setAdapter(mAdapter);
 
         return vista;
+    }
+
+    public void abrirPantallaConversacion(View view){
+        Intent pantalladetalle = new Intent(getActivity(), detalle_conversacion.class);
+        startActivity(pantalladetalle);
     }
 
     @Override

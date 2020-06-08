@@ -1,5 +1,6 @@
 package mx.edu.unid.whatsappclone.adapters;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +16,10 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import mx.edu.unid.whatsappclone.R;
 import mx.edu.unid.whatsappclone.models.ConversacionModelo;
 
-public class conversacionAdapter extends FirestoreRecyclerAdapter<ConversacionModelo, conversacionAdapter.ViewHolder> {
+public class conversacionAdapter extends FirestoreRecyclerAdapter<ConversacionModelo, conversacionAdapter.ViewHolder>
+    implements View.OnClickListener{
 
+    private View.OnClickListener listener;
 
     /**
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link
@@ -31,7 +34,8 @@ public class conversacionAdapter extends FirestoreRecyclerAdapter<ConversacionMo
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder viewHolder, int i, @NonNull ConversacionModelo conversacion) {
         String miusuario = "Alex";
-        if(conversacion.getFrom()==miusuario) {
+        Log.i("Info",conversacion.getFrom());
+        if(conversacion.getFrom().equals(miusuario)) {
             viewHolder.textViewContacto.setText(conversacion.getTo());
         }
         else {
@@ -48,7 +52,21 @@ public class conversacionAdapter extends FirestoreRecyclerAdapter<ConversacionMo
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_conversacion, parent, false);
+
+        view.setOnClickListener(this);
+
         return new ViewHolder(view);
+    }
+
+    public void setOnClickListener(View.OnClickListener listener){
+        this.listener = listener;
+    }
+
+    @Override
+    public void onClick(View v) {
+        if(listener != null){
+            listener.onClick(v);
+        }
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
