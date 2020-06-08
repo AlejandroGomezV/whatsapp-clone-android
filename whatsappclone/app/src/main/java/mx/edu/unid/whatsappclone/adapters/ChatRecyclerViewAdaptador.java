@@ -1,5 +1,7 @@
 package mx.edu.unid.whatsappclone.adapters;
 
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +44,14 @@ public class ChatRecyclerViewAdaptador extends RecyclerView.Adapter<ChatRecycler
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        if(chatLista.get(position).getMensajeR().equals("")){
+            holder.mensajeR.setBackground(Drawable.createFromPath("@android:color/transparent"));
+            holder.horaR.setBackground(Drawable.createFromPath("@android:color/transparent"));
+        }
+        if(chatLista.get(position).getMensajeE().equals("")){
+            holder.mensajeE.setBackground(Drawable.createFromPath("@android:color/transparent"));
+            holder.horaE.setBackground(Drawable.createFromPath("@android:color/transparent"));
+        }
         holder.mensajeR.setText(chatLista.get(position).getMensajeR());
         holder.horaR.setText(chatLista.get(position).getHoraR());
         holder.mensajeE.setText(chatLista.get(position).getMensajeE());
